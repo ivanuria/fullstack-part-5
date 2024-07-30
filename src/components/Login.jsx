@@ -9,6 +9,7 @@ const Login = ({ setUser }) => {
     event.preventDefault()
     try {
       const user = await loginService.login({ username, password })
+      window.localStorage.setItem('bau', JSON.stringify(user))
       setUser(user)
       setUsername('')
       setPassword('')

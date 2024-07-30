@@ -8,6 +8,13 @@ const App = () => {
   const [user, setUser] = useState()
 
   useEffect(() => {
+    const lsUser = window.localStorage.getItem('bau')
+    if (lsUser) {
+      setUser(JSON.parse(lsUser))
+    }
+  }, [])
+
+  useEffect(() => {
     if (!user) return
     const getBlogs = async () => {
       let blogs = await blogService.getAll()
@@ -16,11 +23,17 @@ const App = () => {
     getBlogs()
   }, [user])
 
+
+  const logout = () => {
+    window.localStorage.removeItem('bau')
+    setUser(null)
+  }
+
   const checkLogin = () => {
     if (user) {
       return (
         <>
-        <p><b>{user.name}</b> logged in</p>
+        <p><b>{user.name}</b> logged in <button style={ { marginLeft:'1ch' } } onClick={ logout }>Logout</button></p>
         { blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />) }
         </>
