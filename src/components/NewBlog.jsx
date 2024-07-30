@@ -2,7 +2,7 @@ import { useState } from 'react'
 import blogService from '../services/blogs'
 import FormRow from './FormRow'
 
-const NewBlog = ({ addToBlogs, user }) => {
+const NewBlog = ({ addToBlogs, user, setNotification }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -20,7 +20,14 @@ const NewBlog = ({ addToBlogs, user }) => {
       author,
       url
     }, user)
+    setNotification({
+      message: `Correctly added ${title}`,
+      level: 'info'
+    })
     addToBlogs(savedBlog)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return (

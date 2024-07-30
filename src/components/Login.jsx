@@ -2,7 +2,7 @@ import { useState } from 'react'
 import loginService from '../services/login'
 import FormRow from './FormRow'
 
-const Login = ({ setUser }) => {
+const Login = ({ setUser, setNotification }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -12,10 +12,17 @@ const Login = ({ setUser }) => {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('bau', JSON.stringify(user))
       setUser(user)
+      setNotification({
+        message: 'Correctly Logged In',
+        level: 'info'
+      })
       setUsername('')
       setPassword('')
     } catch (exception) {
-      alert('Invalid username and password')
+      setNotification({
+        message: 'Invalid username and password',
+        level: 'error'
+      })
     }
   }
 
