@@ -14,6 +14,7 @@ const App = () => {
     level: 'info'
   })
   const newBlogRef = useRef()
+  const sorted = useRef(false)
 
   console.log("Notification", notification)
 
@@ -52,6 +53,18 @@ const App = () => {
     })
   }
 
+  const sortBlogs = () => {
+    const sortBlogs = [...blogs]
+    sortBlogs.sort((a, b) => a.likes - b.likes)
+    if (!sorted.current || sorted.current === 'lowerFirst' ) {
+      sorted.current = 'higherFirst'
+      sortBlogs.reverse()
+    } else {
+      sorted.current = 'lowerFirst'
+    }
+    setBlogs(sortBlogs)
+  }
+
   const checkLogin = () => {
     if (user) {
       return (
@@ -59,7 +72,8 @@ const App = () => {
         <p><b>{user.name}</b> logged in <button style={ { marginLeft:'1ch' } } onClick={ logout }>Logout</button></p>
         <Togglable buttonLabel='Add New Blog' ref={ newBlogRef }>
           <NewBlog addToBlogs={ addToblogs } user={user}/>
-        </Togglable>
+        </Togglable><br />
+        <button onClick={ sortBlogs }>Sort Blogs { sorted.current === 'lowerFirst' ? 'form highest to lowest' : 'form lowest to highest' }</button>
         { blogs.map(blog =>
         <Blog key={blog.id} blog={blog} updateBlog={ blogService.updateBlog } />) }
         </>
