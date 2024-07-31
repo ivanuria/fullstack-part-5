@@ -1,7 +1,7 @@
 import Togglable from "./Togglable"
 import { useState } from 'react'
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ username, blog, updateBlog, deleteBlog }) => {
   const [ likes, setLikes ] = useState(blog.likes)
   const [ thinking, setThinking ] = useState(false)
 
@@ -11,7 +11,6 @@ const Blog = ({ blog, updateBlog }) => {
     setLikes( likes + 1 )
     setThinking(false)
   }
-
   return (
     <div style={ { padding: '1rem', border: '1px solid gray', borderRadius: '1rem', marginBlock: '1rem' } }>
       <span style={ { marginRight: '1ch' } } ><b>{ blog.title }</b> { blog.author }</span>
@@ -22,6 +21,8 @@ const Blog = ({ blog, updateBlog }) => {
         <span style={ { marginRight: '1ch' } } >Likes: { likes }</span><button onClick={ sumUpLikes } disabled={ thinking }>Like</button>
         <br />
         {blog.user.name}
+        <br />
+        { username === blog.user.username ? <button onClick={ (e) => deleteBlog(blog.id) } style={ { marginBlock: '1rem' } }>Delete Blog</button> : null }
       </Togglable>
     </div>
   )

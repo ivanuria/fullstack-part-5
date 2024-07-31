@@ -53,8 +53,13 @@ const App = () => {
     })
   }
 
-  const sortBlogs = () => {
-    const sortBlogs = [...blogs]
+  const sortBlogs = (toSortBlogs) => {
+    let sortBlogs
+    if (toSortBlogs) {
+      sortBlogs = [...toSortBlogs]
+    } else {
+      sortBlogs = [...blogs]
+    }
     sortBlogs.sort((a, b) => a.likes - b.likes)
     if (!sorted.current || sorted.current === 'lowerFirst' ) {
       sorted.current = 'higherFirst'
@@ -65,6 +70,25 @@ const App = () => {
     setBlogs(sortBlogs)
   }
 
+  const updateBlog = async (id, blog) => {
+    blogService.updateBlog(id, blog)
+    let updatedBlogs = [...blogs]
+    updatedBlogs = updatedBlogs.map(b => b.id === id ? blog : b )
+    if (sorted.current) {
+      sorted.current = sorted.current === 'lowerFirst' ? 'higherFirst' : 'lowerFirst'
+      sortBlogs(updatedBlogs)
+    } else {
+      setBlogs(updatedBlogs)
+    }
+  }
+
+  const deleteBlog = async (id) => {
+    const toDelete = blogs.find(blog => blog.id === id)
+    if (window.confirm(`Remove blog '${toDelete.title}' by '${toDelete.author}'`)) {
+      await blogService.deleteBlog(id, user)
+      setBlogs(blogs.filter(blog => blog.id !== id))
+    }
+  }
   const checkLogin = () => {
     if (user) {
       return (
@@ -73,9 +97,9 @@ const App = () => {
         <Togglable buttonLabel='Add New Blog' ref={ newBlogRef }>
           <NewBlog addToBlogs={ addToblogs } user={user}/>
         </Togglable><br />
-        <button onClick={ sortBlogs }>Sort Blogs { sorted.current === 'lowerFirst' ? 'form highest to lowest' : 'form lowest to highest' }</button>
+        <button onClick={ (e) => sortBlogs() }>Sort Blogs { sorted.current === 'lowerFirst' ? 'form highest to lowest' : 'form lowest to highest' }</button>
         { blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={ blogService.updateBlog } />) }
+        <Blog key={blog.id} blog={blog} updateBlog={ updateBlog } deleteBlog={ deleteBlog } username={ user.username } />) }
         </>
       )
     }
