@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
 import NewBlog from './components/NewBlog.jsx'
 import blogService from './services/blogs'
 import Notification from './components/Notification.jsx'
+import Togglable from './components/Togglable.jsx'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,6 +13,7 @@ const App = () => {
     message: '',
     level: 'info'
   })
+  const newBlogRef = useRef()
 
   console.log("Notification", notification)
 
@@ -42,6 +44,7 @@ const App = () => {
   }
 
   const addToblogs = (newBlog) => {
+    newBlogRef.current.toggleVisible()
     setBlogs([...blogs, newBlog])
   }
 
@@ -50,7 +53,9 @@ const App = () => {
       return (
         <>
         <p><b>{user.name}</b> logged in <button style={ { marginLeft:'1ch' } } onClick={ logout }>Logout</button></p>
-        <NewBlog addToBlogs={ addToblogs } user={user} setNotification={ setNotification }/>
+        <Togglable buttonLabel='Add New Blog' ref={ newBlogRef }>
+          <NewBlog addToBlogs={ addToblogs } user={user} setNotification={ setNotification }/>
+        </Togglable>
         { blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />) }
         </>
