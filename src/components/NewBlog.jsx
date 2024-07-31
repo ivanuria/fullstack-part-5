@@ -20,7 +20,7 @@ const NewBlog = ({ addToBlogs, user }) => {
       author,
       url
     }, user)
-    addToBlogs(savedBlog)
+    addToBlogs({...savedBlog, user })
     setTitle('')
     setAuthor('')
     setUrl('')
