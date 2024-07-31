@@ -46,6 +46,10 @@ const App = () => {
   const addToblogs = (newBlog) => {
     newBlogRef.current.toggleVisible()
     setBlogs([...blogs, newBlog])
+    setNotification({
+      message: `Correctly added ${ newBlog.title }`,
+      level: 'info'
+    })
   }
 
   const checkLogin = () => {
@@ -54,14 +58,14 @@ const App = () => {
         <>
         <p><b>{user.name}</b> logged in <button style={ { marginLeft:'1ch' } } onClick={ logout }>Logout</button></p>
         <Togglable buttonLabel='Add New Blog' ref={ newBlogRef }>
-          <NewBlog addToBlogs={ addToblogs } user={user} setNotification={ setNotification }/>
+          <NewBlog addToBlogs={ addToblogs } user={user}/>
         </Togglable>
         { blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />) }
         </>
       )
     }
-    return <Login setUser={setUser} setNotification={ setNotification }/>
+    return <Login setUser={ setUser } setNotification={ setNotification }/>
   }
 
   return (
