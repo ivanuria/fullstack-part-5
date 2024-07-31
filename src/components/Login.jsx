@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import loginService from '../services/login'
 import FormRow from './FormRow'
+import PropTypes from 'prop-types'
 
 const Login = ({ setUser, setNotification }) => {
   const [username, setUsername] = useState('')
@@ -39,6 +40,11 @@ const Login = ({ setUser, setNotification }) => {
       <input type='submit' value='Login' />
     </form>
   )
+}
+
+Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
+  setNotification: PropTypes.func.isRequired
 }
 
 export default Login

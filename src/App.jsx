@@ -16,7 +16,7 @@ const App = () => {
   const newBlogRef = useRef()
   const sorted = useRef(false)
 
-  console.log("Notification", notification)
+  console.log('Notification', notification)
 
   useEffect(() => {
     const lsUser = window.localStorage.getItem('bau')
@@ -93,13 +93,13 @@ const App = () => {
     if (user) {
       return (
         <>
-        <p><b>{user.name}</b> logged in <button style={ { marginLeft:'1ch' } } onClick={ logout }>Logout</button></p>
-        <Togglable buttonLabel='Add New Blog' ref={ newBlogRef }>
-          <NewBlog addToBlogs={ addToblogs } user={user}/>
-        </Togglable><br />
-        <button onClick={ (e) => sortBlogs() }>Sort Blogs { sorted.current === 'lowerFirst' ? 'form highest to lowest' : 'form lowest to highest' }</button>
-        { blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={ updateBlog } deleteBlog={ deleteBlog } username={ user.username } />) }
+          <p><b>{user.name}</b> logged in <button style={ { marginLeft:'1ch' } } onClick={ logout }>Logout</button></p>
+          <Togglable buttonLabel='Add New Blog' ref={ newBlogRef }>
+            <NewBlog addToBlogs={ addToblogs } user={user}/>
+          </Togglable><br />
+          <button onClick={ (e) => sortBlogs() }>Sort Blogs { sorted.current === 'lowerFirst' ? 'form highest to lowest' : 'form lowest to highest' }</button>
+          { blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} updateBlog={ updateBlog } deleteBlog={ deleteBlog } username={ user.username } />) }
         </>
       )
     }
@@ -109,7 +109,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs app</h2>
-      <Notification message={ notification.message } level={ notification.level } setNotification={ setNotification }/>
+      <Notification message={ notification.message } level={ notification.level } setNotification={ setNotification } />
       { checkLogin() }
     </div>
   )

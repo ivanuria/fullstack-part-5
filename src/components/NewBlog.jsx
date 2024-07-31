@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 import FormRow from './FormRow'
+import PropTypes from 'prop-types'
 
 const NewBlog = ({ addToBlogs, user }) => {
   const [title, setTitle] = useState('')
@@ -20,7 +21,7 @@ const NewBlog = ({ addToBlogs, user }) => {
       author,
       url
     }, user)
-    addToBlogs({...savedBlog, user })
+    addToBlogs({ ...savedBlog, user })
     setTitle('')
     setAuthor('')
     setUrl('')
@@ -46,6 +47,11 @@ const NewBlog = ({ addToBlogs, user }) => {
       </form>
     </div>
   )
+}
+
+NewBlog.propTypes = {
+  addToBlogs: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 }
 
 export default NewBlog

@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import PropTypes from 'prop-types'
 
 const Notification = ({ message, level, setNotification }) => {
 
@@ -12,7 +13,7 @@ const Notification = ({ message, level, setNotification }) => {
     borderRadius: '.5rem'
   }
 
-  if (level == 'info' && message !== '') {
+  if (level === 'info' && message !== '') {
     style = {
       ...style,
       display: 'block',
@@ -20,7 +21,7 @@ const Notification = ({ message, level, setNotification }) => {
     }
   }
 
-  if (level == 'alert' && message !== '') {
+  if (level === 'alert' && message !== '') {
     style = {
       ...style,
       display: 'block',
@@ -28,7 +29,7 @@ const Notification = ({ message, level, setNotification }) => {
     }
   }
 
-  if (level == 'error' && message !== '') {
+  if (level === 'error' && message !== '') {
     style = {
       ...style,
       display: 'block',
@@ -50,6 +51,12 @@ const Notification = ({ message, level, setNotification }) => {
       { message }
     </div>
   )
+}
+
+Notification.propTypes = {
+  message: PropTypes.string,
+  level: PropTypes.string.isRequired,
+  setNotification: PropTypes.func.isRequired
 }
 
 export default Notification

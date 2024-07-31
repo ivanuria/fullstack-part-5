@@ -1,4 +1,5 @@
 import { useState, forwardRef, useImperativeHandle } from 'react'
+import PropTypes from 'prop-types'
 
 const Togglable = forwardRef(({ children, buttonLabel, reverse=false }, refs) => {
   const [visible, setVisible] = useState(false)
@@ -14,7 +15,7 @@ const Togglable = forwardRef(({ children, buttonLabel, reverse=false }, refs) =>
   })
 
   const renderChildren = () => {
-    const toRender = [children, <button onClick={ toggleVisible } style={ { marginBlock: '1rem' } }>Close</button>]
+    const toRender = [children, <button key='close-button' onClick={ toggleVisible } style={ { marginBlock: '1rem' } }>Close</button>]
     return reverse ? toRender.reverse() : toRender
   }
 
@@ -23,5 +24,11 @@ const Togglable = forwardRef(({ children, buttonLabel, reverse=false }, refs) =>
   }
   return <button onClick={ toggleVisible } style={ { marginBlock: '1rem' } }>{buttonLabel}</button>
 })
+
+Togglable.propTypes = {
+  buttonLabel: PropTypes.string.isRequired
+}
+
+Togglable.displayName = 'Togglable'
 
 export default Togglable

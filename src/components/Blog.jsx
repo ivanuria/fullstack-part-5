@@ -1,5 +1,6 @@
-import Togglable from "./Togglable"
+import Togglable from './Togglable'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ username, blog, updateBlog, deleteBlog }) => {
   const [ likes, setLikes ] = useState(blog.likes)
@@ -7,7 +8,7 @@ const Blog = ({ username, blog, updateBlog, deleteBlog }) => {
 
   const sumUpLikes = async () => {
     setThinking(true)
-    await updateBlog(blog.id, {...blog, likes: likes + 1 })
+    await updateBlog(blog.id, { ...blog, likes: likes + 1 })
     setLikes( likes + 1 )
     setThinking(false)
   }
@@ -16,7 +17,7 @@ const Blog = ({ username, blog, updateBlog, deleteBlog }) => {
       <span style={ { marginRight: '1ch' } } ><b>{ blog.title }</b> { blog.author }</span>
       <Togglable buttonLabel='View' reverse={ true }>
         <br />
-        <a href={ blog.url } target='_blank'>{ blog.url }</a>
+        <a href={ blog.url } target='_blank' rel="noreferrer">{ blog.url }</a>
         <br />
         <span style={ { marginRight: '1ch' } } >Likes: { likes }</span><button onClick={ sumUpLikes } disabled={ thinking }>Like</button>
         <br />
@@ -26,6 +27,13 @@ const Blog = ({ username, blog, updateBlog, deleteBlog }) => {
       </Togglable>
     </div>
   )
+}
+
+Blog.propTypes = {
+  username: PropTypes.string.isRequired,
+  blog: PropTypes.object.isRequired,
+  updateBlog: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired
 }
 
 export default Blog
