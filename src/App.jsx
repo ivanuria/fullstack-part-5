@@ -47,7 +47,7 @@ const App = () => {
     newBlogRef.current.toggleVisible()
     setBlogs([...blogs, newBlog])
     setNotification({
-      message: `Correctly added ${ newBlog.title }`,
+      message: `'${ newBlog.title }' correctly added`,
       level: 'info'
     })
   }
