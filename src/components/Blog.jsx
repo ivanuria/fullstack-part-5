@@ -19,7 +19,7 @@ const Blog = ({ username, blog, updateBlog, deleteBlog, ...props }) => {
         <br />
         <a className='blog__url' href={ blog.url } target='_blank' rel="noreferrer">{ blog.url }</a>
         <br />
-        <span className='blog__likes' style={ { marginRight: '1ch' } } >Likes: { likes }</span><button onClick={ sumUpLikes } disabled={ thinking }>Like</button>
+        <span className='blog__likes' style={ { marginRight: '1ch' } } >Likes: { likes }</span><button className='blog__likes-button' onClick={ sumUpLikes } disabled={ thinking }>Like</button>
         <br />
         {blog.user.name}
         <br />
