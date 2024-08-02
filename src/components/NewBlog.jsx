@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 import FormRow from './FormRow'
 import PropTypes from 'prop-types'
 
-const NewBlog = ({ addToBlogs, user }) => {
+const NewBlog = ({ addToBlogs, user, ...props }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -15,20 +14,21 @@ const NewBlog = ({ addToBlogs, user }) => {
   })
 
   const addNewBlog = async (event) => {
+    console.log('AddNewBlog')
     event.preventDefault()
-    const savedBlog = await blogService.newBlog({
+    addToBlogs({
       title,
       author,
-      url
-    }, user)
-    addToBlogs({ ...savedBlog, user })
+      url,
+      user
+    })
     setTitle('')
     setAuthor('')
     setUrl('')
   }
 
   return (
-    <div className='new-blog' style={ { marginBlock: '1rem' } }>
+    <div className='new-blog' style={ { marginBlock: '1rem' } } { ...props }>
       <h2>Create new Blog</h2>
       <form className='new-blog__form' id='new-blog' onSubmit={ addNewBlog }>
         <FormRow>
