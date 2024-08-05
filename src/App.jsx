@@ -47,7 +47,7 @@ const App = () => {
   const addToblogs = async (newBlog) => {
     const savedBlog = await blogService.newBlog(newBlog, user)
     newBlogRef.current.toggleVisible()
-    setBlogs([...blogs, savedBlog])
+    setBlogs([...blogs, { ...savedBlog, user }])
     setNotification({
       message: `'${ savedBlog.title }' correctly added`,
       level: 'info'

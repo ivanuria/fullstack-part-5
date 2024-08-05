@@ -96,6 +96,12 @@ describe('BlogApp', () => {
           'White Noon',
           'https://open.spotify.com/intl-es/track/5IBIYCwF7zbMifK7yJzJbw?si=705fed26988847d0'
         )
+        await helper.createBlog(
+          page,
+          'Dreams - Acoustic',
+          'Lusaint',
+          'https://open.spotify.com/intl-es/track/5h4yGrTsP8frtJ080nxN5s?si=f68cc7e43e434a20'
+        )
       })
 
       test('like is summing up', async ({ page }) => {
@@ -108,6 +114,19 @@ describe('BlogApp', () => {
         await likeButton.click()
 
         await expect(takeOnMe.getByText('Likes: 1')).toBeVisible()
+      })
+
+      test('deleting is possible', async ({ page }) => {
+        const takeOnMe = page.getByTestId('blog-item').filter({ hasText: /Take on Me, Acoustic Lounge/ })
+        await takeOnMe.getByRole('button').filter({ hasText: /view/i }).click()
+
+        const deleteButton = takeOnMe.getByRole('button').filter({ hasText: /delete blog/i })
+
+        page.on('dialog', dialog => dialog.accept())
+
+        await deleteButton.click()
+
+        await expect(takeOnMe).not.toBeVisible()
       })
     })
   })
