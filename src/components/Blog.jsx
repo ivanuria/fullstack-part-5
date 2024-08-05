@@ -13,7 +13,7 @@ const Blog = ({ username, blog, updateBlog, deleteBlog, ...props }) => {
     setThinking(false)
   }
   return (
-    <div style={ { padding: '1rem', border: '1px solid gray', borderRadius: '1rem', marginBlock: '1rem' } } { ...props } >
+    <div data-testid='blog-item' style={ { padding: '1rem', border: '1px solid gray', borderRadius: '1rem', marginBlock: '1rem' } } { ...props } >
       <span className='blog__title-author' style={ { marginRight: '1ch' } } ><b>{ blog.title }</b> { blog.author }</span>
       <Togglable buttonLabel='View' reverse={ true }>
         <br />

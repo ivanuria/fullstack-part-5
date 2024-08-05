@@ -28,20 +28,20 @@ const NewBlog = ({ addToBlogs, user, ...props }) => {
   }
 
   return (
-    <div className='new-blog' style={ { marginBlock: '1rem' } } { ...props }>
+    <div className='new-blog' style={ { marginBlock: '1rem' } } data-testid='new-blog' { ...props }>
       <h2>Create new Blog</h2>
-      <form className='new-blog__form' id='new-blog' onSubmit={ addNewBlog }>
+      <form className='new-blog__form' id='new-blog' onSubmit={ addNewBlog } data-testid='new-blog-form'>
         <FormRow>
           <label htmlFor='title'>Title: </label>
-          <input id='title' value={ title } onChange={ (e) => setTitle(e.target.value ) } />
+          <input id='title' value={ title } onChange={ (e) => setTitle(e.target.value ) } data-testid='new-blog-title'/>
         </FormRow>
         <FormRow>
           <label htmlFor='author'>Author: </label>
-          <input id='author' value={ author } onChange={ (e) => setAuthor(e.target.value ) } />
+          <input id='author' value={ author } onChange={ (e) => setAuthor(e.target.value ) } data-testid='new-blog-author'/>
         </FormRow>
         <FormRow>
           <label htmlFor='url'>Url: </label>
-          <input id='url' value={ url } onChange={ (e) => setUrl(e.target.value ) } type='url' />
+          <input id='url' value={ url } onChange={ (e) => setUrl(e.target.value ) } type='url' data-testid='new-blog-url'/>
         </FormRow>
         <input type='submit' value="Create new" />
       </form>
