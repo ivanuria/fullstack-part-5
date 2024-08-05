@@ -128,6 +128,69 @@ describe('BlogApp', () => {
 
         await expect(takeOnMe).not.toBeVisible()
       })
+
+      test('deleting is impossible for another user', async ({ page, request }) => {
+        await page.getByRole('button').filter({ hasText: /logout/i }).click()
+
+        await request.post('/api/users', {
+          data: {
+            username: 'jam',
+            password: 'jamgoesinfridge',
+            name: 'Jam Goes in Fridge'
+          }
+        })
+
+        await helper.login(page, 'jam', 'jamgoesinfridge')
+        await page.getByText(/logout/i).waitFor()
+        await helper.createBlog(page, 'Right Here Waiting - Acoustic', 'Hailey Gardiner', 'https://open.spotify.com/intl-es/track/00exKzX8rf94Iekihx50ua?si=e5c19e76f72f4677')
+
+        const blogs = page.getByTestId('blog-item').filter({ hasNotText: /Right Here Waiting - Acoustic/ })
+        for (const item of await blogs.all()) {
+          await item.getByText(/view/i).click()
+          await expect(item.getByRole('button').filter({ hasText: /delete blog/i })).not.toBeVisible()
+        }
+
+        const newBlog = page.getByTestId('blog-item').filter({ hasText: /Right Here Waiting - Acoustic/ })
+        await newBlog.getByText(/view/i).click()
+        const deleteButton = newBlog.getByRole('button').filter({ hasText: /delete blog/i })
+        await expect(deleteButton).toBeVisible()
+
+        page.on('dialog', dialog => dialog.accept())
+        await deleteButton.click()
+        await expect(newBlog).not.toBeVisible()
+      })
+
+      test('arranged posts by likes', async ({ page }) => {
+        const blogs = page.getByTestId('blog-item')
+        let count = 1
+        for (const item of await blogs.all()) {
+          await item.getByText(/view/i).click()
+          for (let i = 0; i < count; i++) {
+            await item.getByRole('button').filter({ hasText: /like/i }).click()
+          }
+          count++
+        }
+
+        await page.getByRole('button').filter({ hasText: /sort blogs from highest to lowest/i }).click()
+        let last
+        for (const item of await blogs.all()) {
+          const data = Number((await item.getByText(/^Likes:/).textContent()).replace('Likes: ', ''))
+          if (last) {
+            expect(data <= last).toBeTruthy()
+          }
+          last = data
+        }
+
+        await page.getByRole('button').filter({ hasText: /sort blogs from lowest to highest/i }).click()
+        last = null
+        for (const item of await blogs.all()) {
+          const data = Number((await item.getByText(/^Likes:/).textContent()).replace('Likes: ', ''))
+          if (last) {
+            expect(data >= last).toBeTruthy()
+          }
+          last = data
+        }
+      })
     })
   })
 })

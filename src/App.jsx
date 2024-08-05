@@ -98,7 +98,7 @@ const App = () => {
           <Togglable buttonLabel='Add New Blog' ref={ newBlogRef }>
             <NewBlog addToBlogs={ addToblogs } user={user}/>
           </Togglable><br />
-          <button onClick={ (e) => sortBlogs() }>Sort Blogs { sorted.current === 'lowerFirst' ? 'form highest to lowest' : 'form lowest to highest' }</button>
+          <button onClick={ (e) => sortBlogs() }>Sort Blogs { sorted.current === 'higherFirst' ? 'from lowest to highest' : 'from highest to lowest' }</button>
           { blogs.map(blog =>
             <Blog key={blog.id} blog={blog} updateBlog={ updateBlog } deleteBlog={ deleteBlog } username={ user.username } />) }
         </>
