@@ -51,11 +51,11 @@ describe('BlogApp', () => {
   describe('When logged in', () => {
     beforeEach(async ({ page }) => {
       await helper.login(page, 'root', 'iamroot')
-      await page.getByText(/add new blog/i).click()
-      await page.getByTestId('new-blog-form').waitFor()
     })
 
     test('form is visible', async ({ page }) => {
+      await page.getByText(/add new blog/i).click()
+      await page.getByTestId('new-blog-form').waitFor()
       const form = page.getByTestId('new-blog-form')
       expect(form).toBeVisible()
       const title = form.getByTestId('new-blog-title')
@@ -69,21 +69,46 @@ describe('BlogApp', () => {
     })
 
     test('a new blog can be created', async ({ page }) => {
-      const form = page.getByTestId('new-blog-form')
-      const titleInput = form.getByTestId('new-blog-title')
-      const authorInput = form.getByTestId('new-blog-author')
-      const urlInput = form.getByTestId('new-blog-url')
-      const submit = form.getByRole('button')
-
-      await titleInput.fill('Always Remember Us this Way - Acoustic cover')
-      await authorInput.fill('Plamina')
-      await urlInput.fill('https://open.spotify.com/intl-es/track/4f9jwV8OMDxsLZWF1j7doA?si=435665b41b2b42eb')
-      await submit.click()
+      await helper.createBlog(
+        page,
+        'Always Remember Us this Way - Acoustic cover',
+        'Plamina',
+        'https://open.spotify.com/intl-es/track/4f9jwV8OMDxsLZWF1j7doA?si=435665b41b2b42eb'
+      )
 
       const notification = page.locator('.notification').filter({ hasText: /Always Remember Us this Way - Acoustic cover/ })
       const blogListed = page.getByTestId('blog-item').filter({ hasText: /Always Remember Us this Way - Acoustic cover/ })
       await expect(notification).toBeVisible()
       await expect(blogListed).toBeVisible()
+    })
+
+    describe('When some Blogs exist', () => {
+      beforeEach(async ({ page }) => {
+        await helper.createBlog(
+          page,
+          'Always Remember Us this Way - Acoustic cover',
+          'Plamina',
+          'https://open.spotify.com/intl-es/track/4f9jwV8OMDxsLZWF1j7doA?si=435665b41b2b42eb'
+        )
+        await helper.createBlog(
+          page,
+          'Take on Me, Acoustic Lounge',
+          'White Noon',
+          'https://open.spotify.com/intl-es/track/5IBIYCwF7zbMifK7yJzJbw?si=705fed26988847d0'
+        )
+      })
+
+      test('like is summing up', async ({ page }) => {
+        const takeOnMe = page.getByTestId('blog-item').filter({ hasText: /Take on Me, Acoustic Lounge/ })
+        await takeOnMe.getByRole('button').filter({ hasText: /view/i }).click()
+
+        await expect(takeOnMe.getByText('Likes: 0')).toBeVisible()
+
+        const likeButton = takeOnMe.getByRole('button').filter({ hasText: 'Like' })
+        await likeButton.click()
+
+        await expect(takeOnMe.getByText('Likes: 1')).toBeVisible()
+      })
     })
   })
 })
