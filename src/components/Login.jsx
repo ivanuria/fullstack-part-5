@@ -28,14 +28,14 @@ const Login = ({ setUser, setNotification }) => {
   }
 
   return (
-    <form className='loginform' id='loginform' onSubmit={doLogin}>
+    <form className='loginform' id='loginform' data-testid='loginform' onSubmit={doLogin}>
       <FormRow>
-        <label htmlFor='username'>Username: </label>
-        <input id='username' value={username} onChange={ (e) => setUsername(e.target.value) } aria-label='type in your username' />
+        <label htmlFor='username' data-testid='username-label'>Username: </label>
+        <input id='username' value={username} onChange={ (e) => setUsername(e.target.value) } aria-label='type in your username'  data-testid='username' />
       </FormRow>
       <FormRow>
-        <label htmlFor='password'>Password: </label>
-        <input id='password' value={password} onChange={ (e) => setPassword(e.target.value) } aria-label='type in your password' type='password' />
+        <label htmlFor='password' data-testid='password-label'>Password: </label>
+        <input id='password' value={password} onChange={ (e) => setPassword(e.target.value) } aria-label='type in your password' type='password' data-testid='password'/>
       </FormRow>
       <input type='submit' value='Login' />
     </form>
